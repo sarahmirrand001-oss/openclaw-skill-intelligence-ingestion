@@ -97,6 +97,29 @@
       border-radius: 8px;
       padding: 2px 8px;
     }
+    .quick {
+      border: 1px solid #2b3440;
+      border-radius: 10px;
+      background: #0a0f15;
+      padding: 12px;
+      margin-top: 10px;
+      overflow: auto;
+    }
+    .quick pre {
+      margin: 0;
+      white-space: pre-wrap;
+      color: #d7dee8;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 13px;
+    }
+    .flow {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 760px) {
+      .flow { grid-template-columns: 1fr; }
+    }
     footer { margin-top: 18px; color: var(--muted); font-size: 13px; }
   </style>
 </head>
@@ -107,7 +130,7 @@
       <h1>Intelligence Ingestion</h1>
       <p class="sub">OpenClaw Skill for high-signal information filtering. Zero-loss pipeline for Telegram/macOS workflows.</p>
       <div class="actions">
-        <a class="cta" href="https://github.com/sarahmirrand001-oss/openclaw-skill-intelligence-ingestion" target="_blank" rel="noopener noreferrer">Start Using This Skill</a>
+        <a class="cta" href="#quick-start">Use Now (CLI)</a>
         <a class="ghost" href="https://github.com/sarahmirrand001-oss/openclaw-skill-intelligence-ingestion/blob/main/SKILL.md" target="_blank" rel="noopener noreferrer">Read SKILL.md</a>
       </div>
       <div class="grid">
@@ -116,6 +139,21 @@
         <div class="card"><div class="k">Output</div><div class="v">Obsidian + Memory</div></div>
         <div class="card"><div class="k">Mode</div><div class="v ok">CLI First</div></div>
       </div>
+    </section>
+
+    <section class="section">
+      <h2 id="quick-start">Quick Start (3 Steps)</h2>
+      <p>Copy the commands below. This is the fastest path from “I found it” to “it works”.</p>
+      <div class="quick"><pre>1) Install skill
+openclaw skills install github:sarahmirrand001-oss/openclaw-skill-intelligence-ingestion
+
+2) Trigger with a URL
+Analyze this: https://example.com/article
+
+3) Verify output
+- Obsidian note created
+- memory/YYYY-MM-DD.md updated
+- reply contains category + strategic value</pre></div>
     </section>
 
     <section class="section">
@@ -133,7 +171,21 @@
     </section>
 
     <section class="section">
-      <h2>Install & Use</h2>
+      <h2>Input → Output</h2>
+      <div class="flow">
+        <div class="card">
+          <div class="k">Input Example</div>
+          <p><code>Analyze this: https://github.com/teoslayer/pilotprotocol</code></p>
+        </div>
+        <div class="card">
+          <div class="k">Output Example</div>
+          <p>Category: <code>infra</code><br/>Strategic Value: <code>🟡 High</code><br/>Saved to Obsidian + memory log.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Repository</h2>
       <p>Repository: <a href="https://github.com/sarahmirrand001-oss/openclaw-skill-intelligence-ingestion">openclaw-skill-intelligence-ingestion</a></p>
       <p>Skill spec: <code>SKILL.md</code></p>
       <p>Best for teams that need consistent, explainable information triage before decision-making.</p>
