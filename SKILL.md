@@ -70,9 +70,16 @@ Pilot Protocol (Context Separation Layer - P0)
 
 Determine which layer this information impacts and note dependencies/synergies with existing components.
 
-### Step 5: STORE — Write Obsidian Note
+### Step 5: STORE — Write Obsidian Note (INPUT/KNOWLEDGE ONLY)
 
-Create a note at:
+**⚠️ STORAGE POLICY:**
+- **Obsidian Vault** = INPUT ONLY (knowledge, reference, analysis)
+- **Output content** (文案, 帖子, 脚本, 小红书笔记等) → T7 Shield 专用文件夹
+  - 小红书笔记 → `/Volumes/T7 Shield/Xiaohongshu_post/`
+  - 其他产出 → `/Volumes/T7 Shield/` 相关目录
+- Obsidian 笔记中可用路径引用指向产出文件，但**不存储产出内容本身**
+
+Create analysis note at:
 ```
 /Volumes/T7 Shield/Obsidian_Vault/20_Intelligence/YYYYMMDD_AuthorOrSource_ShortTitle.md
 ```
