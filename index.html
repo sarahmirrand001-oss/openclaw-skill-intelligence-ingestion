@@ -1,11 +1,15 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Intelligence Ingestion | OpenClaw Skill</title>
-    <meta name="description" content="Zero-loss strategic information pipeline. Analyzes strategic value, archives to Obsidian, and updates your whole operating landscape." />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <meta name="description"
+        content="Zero-loss strategic information pipeline. Analyzes strategic value, archives to Obsidian, and updates your whole operating landscape." />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
     <style>
         :root {
             --bg: #090b0e;
@@ -13,7 +17,8 @@
             --line: rgba(255, 255, 255, 0.08);
             --text: #e2e8f0;
             --muted: #8b95a3;
-            --accent: #4ade80; /* Neo green */
+            --accent: #4ade80;
+            /* Neo green */
             --accent-glow: rgba(74, 222, 128, 0.2);
             --glass: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.1);
@@ -36,7 +41,7 @@
             left: -10vw;
             width: 120vw;
             height: 120vh;
-            background: radial-gradient(circle at 50% 10%, rgba(30,35,55,1) 0%, rgba(9,11,14,0) 60%);
+            background: radial-gradient(circle at 50% 10%, rgba(30, 35, 55, 1) 0%, rgba(9, 11, 14, 0) 60%);
             z-index: -1;
             pointer-events: none;
         }
@@ -159,10 +164,21 @@
             background: rgba(30, 36, 48, 0.6);
         }
 
-        .card:nth-child(1) { animation-delay: 0.1s; }
-        .card:nth-child(2) { animation-delay: 0.2s; }
-        .card:nth-child(3) { animation-delay: 0.3s; }
-        .card:nth-child(4) { animation-delay: 0.4s; }
+        .card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
 
         .k {
             color: var(--muted);
@@ -179,7 +195,9 @@
             color: #fff;
         }
 
-        .v.ok { color: var(--accent); }
+        .v.ok {
+            color: var(--accent);
+        }
 
         .terminal {
             background: #0d1117;
@@ -190,7 +208,7 @@
             font-size: 14px;
             line-height: 1.7;
             margin-bottom: 60px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
             position: relative;
             overflow: hidden;
             opacity: 0;
@@ -201,15 +219,36 @@
         .terminal::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 4px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
             background: linear-gradient(90deg, var(--accent), #3b82f6);
             opacity: 0.8;
         }
 
-        .prompt { color: var(--accent); user-select: none; margin-right: 8px; font-weight: 700;}
-        .comment { color: #6e7681; }
-        .command { color: #c9d1d9; font-weight: 600; }
-        .output { color: #a5d6ff; margin-top: 12px; padding-left: 12px; border-left: 2px solid rgba(165,214,255,0.2); }
+        .prompt {
+            color: var(--accent);
+            user-select: none;
+            margin-right: 8px;
+            font-weight: 700;
+        }
+
+        .comment {
+            color: #6e7681;
+        }
+
+        .command {
+            color: #c9d1d9;
+            font-weight: 600;
+        }
+
+        .output {
+            color: #a5d6ff;
+            margin-top: 12px;
+            padding-left: 12px;
+            border-left: 2px solid rgba(165, 214, 255, 0.2);
+        }
 
         .section-title {
             font-size: 28px;
@@ -255,8 +294,15 @@
         }
 
         @media (max-width: 600px) {
-            .step { flex-direction: column; align-items: flex-start; gap: 8px; }
-            .step b { width: auto; }
+            .step {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .step b {
+                width: auto;
+            }
         }
 
         footer {
@@ -269,71 +315,114 @@
         }
 
         @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
         @keyframes pulseGlow {
-            from { box-shadow: 0 0 10px var(--accent-glow); }
-            to { box-shadow: 0 0 20px rgba(74, 222, 128, 0.4); }
+            from {
+                box-shadow: 0 0 10px var(--accent-glow);
+            }
+
+            to {
+                box-shadow: 0 0 20px rgba(74, 222, 128, 0.4);
+            }
         }
     </style>
 </head>
+
 <body>
     <div class="ambient"></div>
     <main class="wrap">
         <section class="hero">
             <div class="tag">OpenClaw Advanced Skill</div>
             <h1>Intelligence Ingestion</h1>
-            <p class="sub">Zero-loss strategic information pipeline. Captures noise, distills signal, updates Obsidian, and fundamentally shapes Agent capabilities.</p>
+            <p class="sub">Zero-loss strategic information pipeline. Captures signal, auto-generates new Agent
+                capabilities, and keeps you in full control of what your AI becomes.</p>
             <div class="actions">
                 <a class="cta" href="#install">Deploy via CLI</a>
-                <a class="ghost" href="https://github.com/sarahmirrand001-oss/openclaw-skill-intelligence-ingestion" target="_blank">View Docs →</a>
+                <a class="ghost" href="https://github.com/sarahmirrand001-oss/openclaw-skill-intelligence-ingestion"
+                    target="_blank">View Docs →</a>
             </div>
         </section>
 
         <div class="grid">
-            <div class="card"><div class="k">Architecture</div><div class="v">7-Stage Pipeline</div></div>
-            <div class="card"><div class="k">Integration</div><div class="v">Obsidian Vault</div></div>
-            <div class="card"><div class="k">X/Twitter</div><div class="v">Anti-Scrape Ready</div></div>
-            <div class="card"><div class="k">Status</div><div class="v ok">Production</div></div>
+            <div class="card">
+                <div class="k">Architecture</div>
+                <div class="v">8-Stage Pipeline</div>
+            </div>
+            <div class="card">
+                <div class="k">v2.0 Feature</div>
+                <div class="v ok">Auto-Skill Synthesis</div>
+            </div>
+            <div class="card">
+                <div class="k">Interop</div>
+                <div class="v">MCP Compatible</div>
+            </div>
+            <div class="card">
+                <div class="k">Safety</div>
+                <div class="v">🛡️ Human Review</div>
+            </div>
         </div>
 
         <h2 id="install" class="section-title">Terminal Experience</h2>
         <div class="terminal">
             <div><span class="comment"># 1. Install to your OpenClaw environment</span></div>
-            <div><span class="prompt">$</span><span class="command">openclaw skills install github:sarahmirrand001-oss/openclaw-skill-intelligence-ingestion</span></div>
-            <br/>
+            <div><span class="prompt">$</span><span class="command">openclaw skills install
+                    github:sarahmirrand001-oss/openclaw-skill-intelligence-ingestion</span></div>
+            <br />
             <div><span class="comment"># 2. Trigger the ingestion pipeline passively</span></div>
-            <div><span class="prompt">User></span><span class="command">"Analyze this: https://arxiv.org/abs/2402.12345"</span></div>
-            <br/>
+            <div><span class="prompt">User></span><span class="command">"Analyze this:
+                    https://arxiv.org/abs/2402.12345"</span></div>
+            <br />
             <div><span class="comment"># 3. Secure Agent payload delivery</span></div>
             <div class="output">
-                📥 Ingested: New Agent Architecture Paper<br/>
-                📂 Class: theory / skill<br/>
-                🎯 Value: 🔴 Critical — New routing paradigm.<br/>
-                💾 Archiving: 20_Intelligence/240212345.md<br/>
-                🗺️ Landscape: Updated (Execution Layer)
+                📥 Ingested: New Agent Architecture Paper<br />
+                📂 Class: infra / skill<br />
+                🎯 Value: 🔴 Critical — New routing paradigm.<br />
+                🧬 Skill Draft: skills/_drafts/agent-router/SKILL.md<br />
+                💾 Archived: 20_Intelligence/240212345.md<br />
+                🗺️ Landscape: Updated (Execution Layer)<br />
+                ⚡ Action: Review draft → mv to skills/ to activate
             </div>
         </div>
 
         <h2 class="section-title">The Ingestion Pipeline</h2>
         <div class="pipeline">
-            <div class="step"><b>1. READ</b><span>Dynamic extraction (URL / X API / Browser simulation)</span></div>
+            <div class="step"><b>1. READ</b><span>Dynamic extraction (URL / X API / Browser fallback)</span></div>
             <div class="step"><b>2. CLASSIFY</b><span>Assign architectural domain tags</span></div>
-            <div class="step"><b>3. ANALYZE</b><span>Score strategic density</span></div>
-            <div class="step"><b>4. MAP</b><span>Locate impact upon your Stratgic Landscape mapping</span></div>
-            <div class="step"><b>5. STORE</b><span>Mint actionable Obsidian markdown intelligence nodes</span></div>
-            <div class="step"><b>6. REMEMBER</b><span>Embed lessons into Agent daily execution memory</span></div>
-            <div class="step"><b>7. RESPOND</b><span>Stream terse tactical summary directly to operator</span></div>
+            <div class="step"><b>3. ANALYZE</b><span>Score strategic density + capability boundary</span></div>
+            <div class="step"><b>4. MAP</b><span>Locate impact on Strategic Landscape</span></div>
+            <div class="step"><b>5. STORE</b><span>Mint Obsidian intelligence notes</span></div>
+            <div class="step" style="border-color: var(--accent); background: rgba(74, 222, 128, 0.05);"><b>🧬 6.
+                    SYNTHESIZE</b><span>Auto-generate draft Skill when new capability detected</span></div>
+            <div class="step"><b>7. REMEMBER</b><span>Embed into Agent memory + Landscape</span></div>
+            <div class="step"><b>8. RESPOND</b><span>Tactical summary with Skill draft link</span></div>
         </div>
 
         <footer>
-            Built for pragmatic operators. No hype, no fluff, only strategic signal.
+            "Skills are the new Config. Build. For. Agents." — Designed with trust as a first-class concern.
         </footer>
     </main>
 </body>
+
 </html>

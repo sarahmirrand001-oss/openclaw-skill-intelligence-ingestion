@@ -16,6 +16,20 @@ description: >
 > 你在喂养一个比你聪明的东西。
 > 这个 Skill 确保你知道它吃了什么，变成了什么。
 
+**MCP 兼容：** 本 Skill 提供 `manifest.json`，符合 MCP 能力声明规范，可被任何支持 MCP 的 Agent 发现和调用。
+
+---
+
+## 设计哲学
+
+> *"giving my private data/keys to 400K lines of vibe coded monster is not very appealing at all"* — Karpathy
+
+本 Skill 的设计遵循三条原则：
+
+1. **Agent 不能自己给自己装模组。** 所有自动生成的 Skill 都是草案，必须经过人工审核才能激活。
+2. **Skills 是新的 Config。** 不需要改配置文件，不需要 if-else，只需要一个 Skill 文件定义能力。
+3. **Build. For. Agents.** 本 Skill 提供 MCP manifest、结构化输出、CLI 安装，确保任何 Agent 都能发现、理解、使用。
+
 ## 前置要求
 
 | 工具 | 用途 | 必须？ |

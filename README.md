@@ -75,14 +75,35 @@ You share a link about Firecrawl API
 
 ```
 intelligence-ingestion/
-├── SKILL.md                          # Skill behavior + 7-step pipeline
+├── SKILL.md                          # Skill behavior + 8-step pipeline
 ├── README.md                         # This file
+├── manifest.json                     # MCP-compatible capability declaration
 ├── config.example.json               # Configuration template (copy to config.json)
 ├── config.json                       # Your local config (gitignored)
 ├── STRATEGIC_LANDSCAPE.template.md   # Landscape template for first-time setup
 ├── index.html                        # Public landing page (deployable to Vercel)
 └── vercel.json                       # Static deployment config
 ```
+
+## 🛡️ Trust & Safety
+
+> *"malicious or compromised skills in the registry... a complete wild west and a security nightmare"* — Karpathy on OpenClaw Skills
+
+This Skill is designed with security as a first-class concern:
+
+- **No self-modification**: Agent cannot install its own synthesized Skills. All drafts require human review.
+- **Isolation**: Auto-generated Skills land in `_drafts/`, never in the active `skills/` directory.
+- **Auditability**: Every ingestion is logged. Every Skill draft includes its source URL and generation date.
+- **Transparency**: Full `manifest.json` declares exactly what this Skill can read, write, and produce.
+
+## 🔌 MCP Compatibility
+
+This Skill ships with `manifest.json` — a machine-readable capability declaration following the MCP (Model Context Protocol) standard.
+
+This means:
+- ✅ Any MCP-compatible Agent can **discover** this Skill
+- ✅ Any MCP-compatible Agent can **understand** its inputs/outputs without reading SKILL.md
+- ✅ Cross-ecosystem compatibility (not locked to OpenClaw)
 
 ## Companion: Strategic Landscape
 
@@ -129,4 +150,6 @@ vercel --prod
 
 ---
 
-*Built for pragmatic operators. No hype, no fluff, only strategic signal.*
+*Built for pragmatic operators who build for agents. No hype, no fluff, only strategic signal.*
+
+*"Skills are the new Config. Build. For. Agents."*

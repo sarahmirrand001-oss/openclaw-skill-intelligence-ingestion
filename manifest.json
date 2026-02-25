@@ -1,0 +1,111 @@
+{
+    "$schema": "https://spec.modelcontextprotocol.io/2025-03/skill.json",
+    "name": "intelligence-ingestion",
+    "version": "2.0.0",
+    "description": "Zero-loss strategic information pipeline. Analyzes URLs, articles, tweets for strategic value, auto-generates draft Skills when new capabilities are detected.",
+    "author": "sarahmirrand001-oss",
+    "license": "MIT",
+    "homepage": "https://intelligence-ingestion.vercel.app",
+    "repository": "https://github.com/sarahmirrand001-oss/openclaw-skill-intelligence-ingestion",
+    "categories": [
+        "knowledge-management",
+        "intelligence",
+        "automation",
+        "skill-synthesis"
+    ],
+    "capabilities": {
+        "input": [
+            {
+                "type": "url",
+                "description": "Any URL to analyze (web pages, X/Twitter, GitHub repos, arXiv papers)",
+                "examples": [
+                    "https://x.com/karpathy/status/123",
+                    "https://github.com/org/repo",
+                    "https://arxiv.org/abs/2402.12345"
+                ]
+            },
+            {
+                "type": "text",
+                "description": "Pasted article content, tweet text, or any external information",
+                "examples": [
+                    "MCP is the new TCP for agents..."
+                ]
+            }
+        ],
+        "output": [
+            {
+                "type": "obsidian_note",
+                "format": "markdown",
+                "path_pattern": "{vault}/{folder}/YYYYMMDD_source_title.md",
+                "description": "Structured intelligence note with classification, strategic scoring, and capability boundary analysis"
+            },
+            {
+                "type": "skill_draft",
+                "format": "markdown",
+                "path_pattern": "{workspace}/skills/_drafts/{name}/SKILL.md",
+                "description": "Auto-synthesized Skill definition when actionable new capability is detected. Requires human review.",
+                "conditional": true,
+                "condition": "Content describes a usable tool/API/protocol not yet in Agent's capability set"
+            },
+            {
+                "type": "landscape_update",
+                "format": "markdown",
+                "path_pattern": "{workspace}/STRATEGIC_LANDSCAPE.md",
+                "description": "Strategic Landscape capability map update for critical information",
+                "conditional": true,
+                "condition": "Strategic value rated 🔴 Critical"
+            },
+            {
+                "type": "memory_log",
+                "format": "markdown",
+                "path_pattern": "{workspace}/memory/YYYY-MM-DD.md",
+                "description": "Daily memory log entry"
+            }
+        ],
+        "classification_schema": {
+            "categories": [
+                "infra",
+                "strategy",
+                "skill",
+                "business",
+                "theory",
+                "tutorial",
+                "product",
+                "threat"
+            ],
+            "value_levels": [
+                "🔴 Critical",
+                "🟡 High",
+                "🟢 Medium",
+                "⚪ Low"
+            ]
+        }
+    },
+    "dependencies": {
+        "required": [
+            "obsidian",
+            "openclaw"
+        ],
+        "optional": [
+            "chrome",
+            "xurl-skill"
+        ]
+    },
+    "safety": {
+        "auto_install": false,
+        "draft_isolation": true,
+        "human_review_required": true,
+        "principle": "Agent cannot install modules on itself. All synthesized Skills are drafts requiring human approval."
+    },
+    "triggers": {
+        "auto": [
+            "user shares URL",
+            "user pastes article text",
+            "user says 'analyze this'"
+        ],
+        "exclude": [
+            "simple summarization requests",
+            "shopping/entertainment links"
+        ]
+    }
+}
