@@ -1,10 +1,11 @@
 ---
 name: Intelligence Ingestion
-version: 1.1.0
+version: 2.0.0
 description: >
   Analyze and evaluate URLs, links, articles, tweets, and external info sources for strategic
   value. NOT a summarizer — this skill classifies, scores importance, maps to architecture,
-  stores structured notes in Obsidian, and updates the Strategic Landscape.
+  stores structured notes in Obsidian, updates the Strategic Landscape, and auto-generates
+  draft Skills when new capabilities are detected (Auto-Skill Synthesis).
   Use when: user shares a link (x.com, github.com, arxiv.org, any URL), pastes article text,
   says "analyze this", "evaluate this", "what do you think about this", or forwards content.
   Do NOT use for: simple summarization requests (use summarize skill instead).
@@ -107,7 +108,7 @@ X 平台有严格的反爬机制。使用以下降级链：
 
 ---
 
-## Pipeline（7 步）
+## Pipeline（8 步）
 
 ### Step 1: READ — 提取内容
 按上述「内容提取策略」执行。记录使用了哪种提取方式。
@@ -183,22 +184,76 @@ X 平台有严格的反爬机制。使用以下降级链：
 **分析笔记：** [直接、犀利的分析]
 ```
 
-### Step 6: REMEMBER — 更新记忆
+### Step 6: SYNTHESIZE — 自动生成 Skill 草案（核心进化步骤）
+
+**触发条件：** 当摄取的内容描述了一个 **可操作的工具、API、协议或技术**，且 Agent 当前尚未具备该能力时，自动触发。
+
+**不触发：** 纯理论 / 纯观点 / 已具备的能力 / 战略价值 ⚪ 低的内容。
+
+**执行流程：**
+
+1. **能力差距判断：** 对比当前 `skills/` 目录和 Strategic Landscape，确认这是一个 Agent 尚不具备的新能力。
+2. **草案生成：** 在 `{workspace}/skills/_drafts/` 目录下创建新 Skill 文件夹：
+
+```
+skills/_drafts/[skill-name]/
+├── SKILL.md          # 自动生成的 Skill 行为定义
+└── README.md         # 简要说明（来源、用途、依赖）
+```
+
+3. **SKILL.md 草案模板：**
+
+```markdown
+---
+name: [Skill 名称]
+version: 0.1.0-draft
+description: >
+  [基于摄取内容自动生成的描述]
+  Auto-synthesized by Intelligence Ingestion from: [来源 URL]
+---
+
+# [Skill 名称]
+
+> 🧬 此 Skill 由 Intelligence Ingestion 自动生成，需人工审核后安装。
+> 来源: [URL]
+> 生成日期: YYYY-MM-DD
+
+## 前置要求
+[从摄取内容中提取的依赖项：API Key、SDK、服务等]
+
+## 触发条件
+[基于能力描述推断的触发场景]
+
+## 执行流程
+[基于摄取内容提炼的操作步骤]
+
+## 输入/输出
+- **输入：** [预期输入]
+- **输出：** [预期产出]
+```
+
+4. **标记状态：** 草案 Skill 放在 `_drafts/` 目录，不会被 OpenClaw 自动加载。只有用户审核后移动到 `skills/` 目录才会激活。
+
+> **原则：Agent 不能自己给自己装模组。** 所有自动生成的 Skill 都是草案状态，必须经过用户审核。这是安全边界。
+
+### Step 7: REMEMBER — 更新记忆
 
 1. **必做：** 追加到当日日志 `{workspace}/memory/YYYY-MM-DD.md`
 2. **如果 🔴 关键：** 同步更新 `{landscape_path}`（Strategic Landscape）
 3. **如果涉及新工具：** 标记待更新 `TOOLS.md`
+4. **如果生成了 Skill 草案：** 记录到日志，标注草案路径和审核状态
 
-### Step 7: RESPOND — 回复用户
+### Step 8: RESPOND — 回复用户
 
 ```
 📥 已摄取: [标题]
 📂 分类: [分类]
 🎯 战略价值: [🔴/🟡/🟢/⚪] [一句话]
 🔄 能力边界变化: [有变化则说明 / 无变化]
+🧬 Skill 草案: [已生成 → skills/_drafts/[name]/ | 不适用]
 💾 已存档: Obsidian → {intelligence_folder}/[文件名]
 🗺️ 全景图: [已更新 / 未更新 / 未初始化]
-⚡ 建议行动: [下一步]
+⚡ 建议行动: [审核并安装 Skill / 其他下一步]
 ```
 
 ---
@@ -249,11 +304,17 @@ Step 4: MAP
 Step 5: STORE
   → 已写入 Obsidian: 20_Intelligence/20260225_kaboraAI_MCP_Agent_TCP.md
 
-Step 6: REMEMBER
+Step 6: SYNTHESIZE
+  → 能力差距判断: Agent 当前没有 MCP 兼容接口生成能力
+  → 草案生成: skills/_drafts/mcp-schema-generator/SKILL.md
+  → 草案内容: 读取现有 Skill，自动生成 MCP JSON Schema
+
+Step 7: REMEMBER
   → 已更新 memory/2026-02-25.md
   → 已更新 STRATEGIC_LANDSCAPE.md
+  → 已记录 Skill 草案: mcp-schema-generator (待审核)
 
-Step 7: RESPOND
+Step 8: RESPOND
 ```
 
 ### 输出
@@ -262,9 +323,13 @@ Step 7: RESPOND
 📂 分类: infra / skill, strategy
 🎯 战略价值: 🔴 关键 — MCP 97M 下载量，24个月窗口期
 🔄 能力边界变化: 所有 Skill 需要 MCP 兼容接口才能被 Agent 发现和调用
+🧬 Skill 草案: 已生成 → skills/_drafts/mcp-schema-generator/
+   → 功能: 读取现有 Skill，自动生成 MCP JSON Schema
+   → 依赖: 无（纯文件操作）
+   → 审核: mv skills/_drafts/mcp-schema-generator skills/mcp-schema-generator
 💾 已存档: Obsidian → 20_Intelligence/20260225_kaboraAI_MCP_Agent_TCP.md
 🗺️ 全景图: 已更新（Communication 层 + Orchestration 层）
-⚡ 建议行动: 审计现有 Skill，添加 MCP JSON Schema
+⚡ 建议行动: 审核 mcp-schema-generator 草案，安装后审计现有 Skill
 ```
 
 ---
@@ -279,8 +344,11 @@ Step 7: RESPOND
 | 内容不可达 | 标注提取失败原因，基于用户提供的内容分析 |
 | 用户自带分析 | 整合用户判断，不覆盖 |
 | config.json 缺失 | 报错并输出修复指引 |
-| Landscape 文件不存在 | Step 4 跳过，Step 7 提示初始化 |
+| Landscape 文件不存在 | Step 4 跳过，Step 8 提示初始化 |
 | X/Twitter 全部提取方式失败 | 请求用户粘贴推文原文 |
+| 内容是纯观点/理论 | Step 6 SYNTHESIZE 跳过，标注「不适用」 |
+| 已具备该能力 | Step 6 SYNTHESIZE 跳过，标注「能力已存在」 |
+| `_drafts/` 目录不存在 | 自动创建 `{workspace}/skills/_drafts/` |
 
 ---
 
@@ -293,6 +361,7 @@ Step 7: RESPOND
 - [ ] 来源 URL 已保留在笔记中
 - [ ] 战略价值已评估
 - [ ] 能力边界变化已评估
+- [ ] Skill 草案按需生成（如适用，确认 `_drafts/` 下文件存在）
 - [ ] Strategic Landscape 按需更新
-- [ ] 用户收到确认摘要（Step 7 格式）
+- [ ] 用户收到确认摘要（Step 8 格式）
 - [ ] 若内容提取失败，已告知用户原因和解决方案

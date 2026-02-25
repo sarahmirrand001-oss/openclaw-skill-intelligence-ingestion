@@ -14,10 +14,10 @@ This Skill flips the model: **every piece of information is analyzed, classified
 ## Core Flow
 
 ```
-READ → CLASSIFY → ANALYZE → MAP → STORE → REMEMBER → RESPOND
+READ → CLASSIFY → ANALYZE → MAP → STORE → SYNTHESIZE → REMEMBER → RESPOND
 ```
 
-7-step pipeline. From "I saw it" to "I know what it means." Zero information loss.
+8-step pipeline. From "I saw it" to "my Agent literally learned a new ability." Zero information loss.
 
 ## Prerequisites
 
@@ -54,7 +54,22 @@ Each ingestion creates:
 - 📄 **Structured Obsidian note** (category + strategic value score + capability change)
 - 📝 **Daily memory log update**
 - 🗺️ **Strategic Landscape update** (for critical information)
-- � **Capability boundary assessment** (what can your Agent do now that it couldn't before?)
+- 🔄 **Capability boundary assessment** (what can your Agent do now that it couldn't before?)
+- 🧬 **Auto-generated Skill draft** (when a new usable capability is detected)
+
+## 🧬 Auto-Skill Synthesis (NEW in v2.0)
+
+The killer feature: when the ingested content describes a **usable tool, API, or protocol** that your Agent doesn't have yet, the pipeline automatically generates a draft `SKILL.md` file.
+
+```
+You share a link about Firecrawl API
+  → Intelligence Ingestion analyzes it
+  → Detects: "Agent doesn't have structured web scraping yet"
+  → Auto-generates: skills/_drafts/firecrawl-scraper/SKILL.md
+  → You review → move to skills/ → Agent can now do it
+```
+
+**Safety boundary:** Drafts land in `skills/_drafts/` and are NOT auto-loaded. You must review and approve before the Agent gains the capability.
 
 ## File Structure
 
