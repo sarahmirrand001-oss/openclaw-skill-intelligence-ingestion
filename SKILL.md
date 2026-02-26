@@ -30,6 +30,24 @@ This Skill embraces a trust-first design philosophy:
 2. **Skills are the new Config.** No need to modify configuration files or monster if-else scripts. A single Skill file defines a capability.
 3. **Build. For. Agents.** Built with an MCP manifest, structured outputs, and CLI installation so that any Agent in the ecosystem can find, understand, and use it.
 
+## Permissions & Privacy
+
+**This Skill writes files to your local filesystem and may access sensitive browser state.** Full transparency on what it touches:
+
+| Permission | What | Why |
+|------------|------|-----|
+| **File Write** | `{obsidian_vault}/{intelligence_folder}/` | Creates structured intelligence notes |
+| **File Write** | `{workspace}/STRATEGIC_LANDSCAPE.md` | Updates capability map when critical info is ingested |
+| **File Write** | `{workspace}/skills/_drafts/` | Creates auto-synthesized Skill drafts (isolated, never auto-loaded) |
+| **File Write** | `{workspace}/memory/` | Appends to daily memory logs |
+| **File Create** | `STRATEGIC_LANDSCAPE.md` | Auto-creates from template if missing on first run |
+| **File Read** | `{workspace}/skills/` | Reads existing Skills for gap analysis during synthesis |
+| **Network** | User-provided URLs | Fetches content via HTTP; may fall back to search if primary fetch fails |
+| **Browser Session** | Chrome cookies/session (Optional) | Used only for login-protected pages (e.g., X/Twitter). Exposes session tokens to agent runtime. **Only enable in trusted environments.** |
+| **Credential** | xurl X API auth (Optional) | Used for authenticated X/Twitter API v2 access via the xurl Skill |
+
+> **Privacy Note:** The "never return empty-handed" fallback policy means the Skill may make multiple external network requests per ingestion (direct fetch → xurl → browser → web search). All fetched content is stored locally in your Obsidian vault; no data is transmitted to third-party servers beyond the original fetch.
+
 ## Prerequisites
 
 | Tool | Purpose | Required? |

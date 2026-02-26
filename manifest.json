@@ -1,7 +1,7 @@
 {
     "$schema": "https://spec.modelcontextprotocol.io/2025-03/skill.json",
     "name": "intelligence-ingestion",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "description": "Zero-loss strategic information pipeline. Analyzes URLs, articles, tweets for strategic value, auto-generates draft Skills when new capabilities are detected.",
     "author": "sarahmirrand001-oss",
     "license": "MIT",
@@ -12,6 +12,85 @@
         "intelligence",
         "automation",
         "skill-synthesis"
+    ],
+    "required_config": {
+        "obsidian_vault_path": {
+            "type": "path",
+            "description": "Absolute path to the user's Obsidian vault root directory. This skill writes structured notes here.",
+            "required": true,
+            "sensitive": false
+        },
+        "intelligence_folder": {
+            "type": "string",
+            "description": "Subfolder within the Obsidian vault for intelligence notes.",
+            "required": false,
+            "default": "20_Intelligence"
+        },
+        "landscape_path": {
+            "type": "path",
+            "description": "Path to STRATEGIC_LANDSCAPE.md relative to workspace. This file is read and may be written to.",
+            "required": false,
+            "default": "STRATEGIC_LANDSCAPE.md"
+        },
+        "output_dir": {
+            "type": "path",
+            "description": "Directory for non-knowledge outputs (posts, scripts). Optional.",
+            "required": false
+        }
+    },
+    "credentials": {
+        "xurl_auth": {
+            "type": "oauth/api_key",
+            "description": "X/Twitter API v2 authentication via the xurl skill. Only needed for reading X/Twitter links.",
+            "required": false,
+            "used_by": "xurl-skill (optional dependency)"
+        },
+        "chrome_session": {
+            "type": "browser_session",
+            "description": "If browser-based extraction is used, the skill may leverage the user's active Chrome login session (cookies/session tokens) to access login-protected pages.",
+            "required": false,
+            "privacy_note": "This exposes session state to the agent runtime. Only enable in trusted environments."
+        }
+    },
+    "file_permissions": {
+        "read": [
+            "{workspace}/skills/ — reads existing skills directory for gap analysis",
+            "{workspace}/STRATEGIC_LANDSCAPE.md — reads capability map for architectural mapping",
+            "{config.obsidian_vault_path}/ — reads existing notes to avoid duplicates"
+        ],
+        "write": [
+            "{config.obsidian_vault_path}/{config.intelligence_folder}/ — creates structured intelligence notes",
+            "{workspace}/STRATEGIC_LANDSCAPE.md — updates capability map when critical info is ingested",
+            "{workspace}/skills/_drafts/ — creates auto-synthesized skill draft folders (isolated, not auto-loaded)",
+            "{workspace}/memory/ — appends to daily memory logs"
+        ],
+        "create": [
+            "{workspace}/STRATEGIC_LANDSCAPE.md — auto-creates from template if missing on first run",
+            "{workspace}/skills/_drafts/ — auto-creates directory if missing"
+        ]
+    },
+    "network_behavior": {
+        "description": "This skill fetches content from user-provided URLs. If primary extraction fails, it falls back to alternative methods, expanding the network footprint.",
+        "fallback_chain": [
+            "read_url_content(url) — direct HTTP fetch",
+            "xurl skill — authenticated X API call (if configured)",
+            "browser tool — rendered page via Chrome session",
+            "web search — search engine query for cached content"
+        ],
+        "note": "The 'never return empty-handed' policy means the skill may make multiple external requests per ingestion."
+    },
+    "privacy_considerations": [
+        "Browser-based extraction (fallback level 2-3) may expose Chrome cookies and session tokens to the agent runtime.",
+        "URLs and their content are stored as Obsidian notes in the user's local vault.",
+        "No data is transmitted to external servers beyond the original URL fetch and optional search fallback.",
+        "All generated files remain local to the user's filesystem."
+    ],
+    "persistence_effects": [
+        "Creates markdown files in the Obsidian vault (one per ingestion).",
+        "Appends to daily memory log files.",
+        "May create or modify STRATEGIC_LANDSCAPE.md.",
+        "May create skill draft folders under skills/_drafts/ (never auto-activated).",
+        "Auto-creates STRATEGIC_LANDSCAPE.md from template if file does not exist on first run."
     ],
     "capabilities": {
         "input": [
@@ -53,7 +132,7 @@
                 "path_pattern": "{workspace}/STRATEGIC_LANDSCAPE.md",
                 "description": "Strategic Landscape capability map update for critical information",
                 "conditional": true,
-                "condition": "Strategic value rated 🔴 Critical"
+                "condition": "Strategic value rated Critical"
             },
             {
                 "type": "memory_log",
@@ -74,10 +153,10 @@
                 "threat"
             ],
             "value_levels": [
-                "🔴 Critical",
-                "🟡 High",
-                "🟢 Medium",
-                "⚪ Low"
+                "Critical",
+                "High",
+                "Medium",
+                "Low"
             ]
         }
     },
@@ -87,15 +166,23 @@
             "openclaw"
         ],
         "optional": [
-            "chrome",
-            "xurl-skill"
+            {
+                "name": "chrome",
+                "reason": "Browser-based extraction for login-protected pages. Exposes session state."
+            },
+            {
+                "name": "xurl-skill",
+                "reason": "Authenticated X/Twitter API v2 access. Requires separate credential configuration."
+            }
         ]
     },
     "safety": {
         "auto_install": false,
+        "always_on": false,
         "draft_isolation": true,
         "human_review_required": true,
-        "principle": "Agent cannot install modules on itself. All synthesized Skills are drafts requiring human approval."
+        "self_modification": false,
+        "principle": "Agent cannot install modules on itself. All synthesized Skills are drafts requiring human approval before activation."
     },
     "triggers": {
         "auto": [

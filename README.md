@@ -57,7 +57,7 @@ Each ingestion creates:
 - 🔄 **Capability boundary assessment** (what can your Agent do now that it couldn't before?)
 - 🧬 **Auto-generated Skill draft** (when a new usable capability is detected)
 
-## 🧬 Auto-Skill Synthesis (NEW in v2.0)
+## 🧬 Auto-Skill Synthesis
 
 The killer feature: when the ingested content describes a **usable tool, API, or protocol** that your Agent doesn't have yet, the pipeline automatically generates a draft `SKILL.md` file.
 
@@ -85,16 +85,39 @@ intelligence-ingestion/
 └── vercel.json                       # Static deployment config
 ```
 
-## 🛡️ Trust & Safety
+## 🛡️ Trust, Safety & Permissions
 
-> *"malicious or compromised skills in the registry... a complete wild west and a security nightmare"* — Karpathy on OpenClaw Skills
+> *"giving my private data/keys to 400K lines of vibe coded monster is not very appealing at all"* — Andrej Karpathy
 
-This Skill is designed with security as a first-class concern:
+This Skill is designed with security and transparency as first-class concerns:
 
 - **No self-modification**: Agent cannot install its own synthesized Skills. All drafts require human review.
 - **Isolation**: Auto-generated Skills land in `_drafts/`, never in the active `skills/` directory.
 - **Auditability**: Every ingestion is logged. Every Skill draft includes its source URL and generation date.
 - **Transparency**: Full `manifest.json` declares exactly what this Skill can read, write, and produce.
+
+### What This Skill Writes
+
+| Target | Path | When |
+|--------|------|------|
+| Obsidian notes | `{vault}/{intelligence_folder}/` | Every ingestion |
+| Memory logs | `{workspace}/memory/` | Every ingestion |
+| Strategic Landscape | `{workspace}/STRATEGIC_LANDSCAPE.md` | When info is rated Critical |
+| Skill drafts | `{workspace}/skills/_drafts/` | When a new capability gap is detected |
+
+### Browser & Network Behavior
+
+- The Skill fetches content from user-provided URLs via HTTP.
+- If direct fetch fails, the fallback chain may use your **active Chrome session** (cookies/session tokens) to access login-protected pages. **This exposes browser state to the agent runtime — only enable in trusted environments.**
+- The "never return empty-handed" policy means the Skill may make **multiple external requests** per ingestion (direct fetch → xurl API → browser → web search).
+- All fetched content is stored **locally** in your Obsidian vault. No data is sent to third-party servers beyond the original URL fetch.
+
+### Before You Install
+
+1. Ensure your `obsidian_vault_path` in `config.json` is correct and backed up.
+2. Only enable browser-based extraction if you trust the agent runtime environment.
+3. Review any auto-generated Skill drafts carefully before moving them from `_drafts/` to `skills/`.
+4. Consider running with a read-only vault copy if you want to test first.
 
 ## 🔌 MCP Compatibility
 
