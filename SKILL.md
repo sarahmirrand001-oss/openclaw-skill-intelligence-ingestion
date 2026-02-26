@@ -43,10 +43,9 @@ This Skill embraces a trust-first design philosophy:
 | **File Create** | `STRATEGIC_LANDSCAPE.md` | Auto-creates from template if missing on first run |
 | **File Read** | `{workspace}/skills/` | Reads existing Skills for gap analysis during synthesis |
 | **Network** | User-provided URLs | Fetches content via HTTP; may fall back to search if primary fetch fails |
-| **Browser Session** | Chrome cookies/session (Optional) | Used only for login-protected pages (e.g., X/Twitter). Exposes session tokens to agent runtime. **Only enable in trusted environments.** |
 | **Credential** | xurl X API auth (Optional) | Used for authenticated X/Twitter API v2 access via the xurl Skill |
 
-> **Privacy Note:** The "never return empty-handed" fallback policy means the Skill may make multiple external network requests per ingestion (direct fetch → xurl → browser → web search). All fetched content is stored locally in your Obsidian vault; no data is transmitted to third-party servers beyond the original fetch.
+> **Privacy Note:** The "never return empty-handed" fallback policy means the Skill may make multiple external network requests per ingestion (direct fetch → xurl → web search). All fetched content is stored locally in your Obsidian vault; no data is transmitted to third-party servers beyond the original fetch.
 
 ## Prerequisites
 
@@ -54,7 +53,6 @@ This Skill embraces a trust-first design philosophy:
 |------|---------|-----------|
 | **Obsidian** | Knowledge storage (notes land here) | ✅ Required |
 | **OpenClaw** | Skill host + Agent orchestration | ✅ Required |
-| **Chrome** | For reading login-required pages (X/Twitter) | ✅ Recommended |
 
 ## Configuration
 
@@ -107,7 +105,7 @@ Different sources require different extraction methods. The Agent must run down 
 ### Standard Web Pages
 ```
 1. read_url_content(url) → If successful, use it
-2. Fallback → Read via browser simulation tool
+2. Fallback → Direct user to paste content
 ```
 
 ### X/Twitter (Aggressive Anti-Scraping)
@@ -117,9 +115,8 @@ X strictly prevents unauthenticated scraping. Use this degradation chain:
 1. xurl Skill (Recommended) → Native OpenClaw skill using X API v2
    - Most reliable method
    - Requires xurl authentication
-2. Fallback → Read via browser tool (leverages user's active Chrome session)
-3. Fallback → Web search the tweet text (often indexed by search engines)
-4. Fallback → Ask user to paste the raw text
+2. Fallback → Web search the tweet text (often indexed by search engines)
+3. Fallback → Ask user to paste the raw text
 ```
 
 > **Principle: Never return empty-handed.** Even if extraction fails, inform the user exactly which step failed, why, and how to fix it.
@@ -133,8 +130,7 @@ X strictly prevents unauthenticated scraping. Use this degradation chain:
 
 ### Paywalls / Login Walls
 ```
-1. Read via browser tool (user might have an active session)
-2. Fallback → Mark as unreachable and analyze based solely on user-provided summary
+1. Mark as unreachable and analyze based solely on user-provided summary
 ```
 
 ---

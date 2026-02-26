@@ -44,12 +44,6 @@
             "description": "X/Twitter API v2 authentication via the xurl skill. Only needed for reading X/Twitter links.",
             "required": false,
             "used_by": "xurl-skill (optional dependency)"
-        },
-        "chrome_session": {
-            "type": "browser_session",
-            "description": "If browser-based extraction is used, the skill may leverage the user's active Chrome login session (cookies/session tokens) to access login-protected pages.",
-            "required": false,
-            "privacy_note": "This exposes session state to the agent runtime. Only enable in trusted environments."
         }
     },
     "file_permissions": {
@@ -74,13 +68,11 @@
         "fallback_chain": [
             "read_url_content(url) — direct HTTP fetch",
             "xurl skill — authenticated X API call (if configured)",
-            "browser tool — rendered page via Chrome session",
             "web search — search engine query for cached content"
         ],
         "note": "The 'never return empty-handed' policy means the skill may make multiple external requests per ingestion."
     },
     "privacy_considerations": [
-        "Browser-based extraction (fallback level 2-3) may expose Chrome cookies and session tokens to the agent runtime.",
         "URLs and their content are stored as Obsidian notes in the user's local vault.",
         "No data is transmitted to external servers beyond the original URL fetch and optional search fallback.",
         "All generated files remain local to the user's filesystem."
@@ -166,10 +158,6 @@
             "openclaw"
         ],
         "optional": [
-            {
-                "name": "chrome",
-                "reason": "Browser-based extraction for login-protected pages. Exposes session state."
-            },
             {
                 "name": "xurl-skill",
                 "reason": "Authenticated X/Twitter API v2 access. Requires separate credential configuration."

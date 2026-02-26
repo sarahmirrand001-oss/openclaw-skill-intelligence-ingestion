@@ -105,19 +105,17 @@ This Skill is designed with security and transparency as first-class concerns:
 | Strategic Landscape | `{workspace}/STRATEGIC_LANDSCAPE.md` | When info is rated Critical |
 | Skill drafts | `{workspace}/skills/_drafts/` | When a new capability gap is detected |
 
-### Browser & Network Behavior
+### Network Behavior
 
 - The Skill fetches content from user-provided URLs via HTTP.
-- If direct fetch fails, the fallback chain may use your **active Chrome session** (cookies/session tokens) to access login-protected pages. **This exposes browser state to the agent runtime — only enable in trusted environments.**
-- The "never return empty-handed" policy means the Skill may make **multiple external requests** per ingestion (direct fetch → xurl API → browser → web search).
+- The "never return empty-handed" policy means the Skill may make **multiple external requests** per ingestion (direct fetch → xurl API → web search).
 - All fetched content is stored **locally** in your Obsidian vault. No data is sent to third-party servers beyond the original URL fetch.
 
 ### Before You Install
 
 1. Ensure your `obsidian_vault_path` in `config.json` is correct and backed up.
-2. Only enable browser-based extraction if you trust the agent runtime environment.
-3. Review any auto-generated Skill drafts carefully before moving them from `_drafts/` to `skills/`.
-4. Consider running with a read-only vault copy if you want to test first.
+2. Review any auto-generated Skill drafts carefully before moving them from `_drafts/` to `skills/`.
+3. Consider running with a read-only vault copy if you want to test first.
 
 ## 🔌 MCP Compatibility
 
@@ -142,9 +140,8 @@ Every critical piece of information automatically updates the Landscape, so you 
 X has aggressive anti-scraping. This Skill uses a 4-level fallback chain:
 
 1. **xurl Skill** (OpenClaw built-in) → Authenticated X API v2 access
-2. **Browser tool** → Chrome login session
-3. **Web search** → Search engine cache
-4. **User paste** → Last resort
+2. **Web search** → Search engine cache
+3. **User paste** → Last resort
 
 ## Troubleshooting
 
