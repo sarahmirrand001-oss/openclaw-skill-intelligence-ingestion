@@ -1,6 +1,6 @@
 ---
 name: Intelligence Ingestion
-version: 2.0.0
+version: 2.0.2
 description: >
   Analyze and evaluate URLs, links, articles, tweets, and external info sources for strategic
   value. NOT a summarizer — this skill classifies, scores importance, maps to architecture,
